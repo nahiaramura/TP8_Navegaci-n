@@ -3,12 +3,10 @@ import { Button, TextInput, Text, View, StyleSheet, TouchableOpacity } from 'rea
 import { NavigationContainer, useNavigation } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-
+import Noticias1 from './src/screens/Noticias1';
+import Noticias2 from './src/screens/Noticias2';
 import { Ionicons } from '@expo/vector-icons';
 
-//
-// Screens del Primer Stack
-//
 function ScreenA1() {
   const navigation = useNavigation();
   return (
@@ -18,7 +16,16 @@ function ScreenA1() {
     </View>
   );
 }
+const StackD = createNativeStackNavigator();
 
+function StackDNavigator() {
+  return (
+    <StackD.Navigator>
+      <StackD.Screen name="Noticias1" component={Noticias1} />
+      <StackD.Screen name="Noticias2" component={Noticias2} />
+    </StackD.Navigator>
+  );
+}
 function ScreenA2() {
   const navigation = useNavigation();
   return (
@@ -29,7 +36,7 @@ function ScreenA2() {
   );
 }
 
-// Screens del Segundo Stack
+
 function ScreenB1() {
   const navigation = useNavigation();
   return (
@@ -50,30 +57,52 @@ function ScreenB2() {
   );
 }
 
-// Screens del Tercer Stack
+
 function ScreenC1() {
+  const [nombre, setNombre] = React.useState('');
+  const [telefono, setTelefono] = React.useState('');
   const navigation = useNavigation();
+
   return (
     <View style={[styles.homeScreen, {backgroundColor: '#009900'}]}>
-      <Text style={styles.text}>PERFIL</Text>
-      <Button title="Ir a Perfil 2" onPress={() => navigation.navigate('ScreenC2')} />
+      <Text style={styles.text}>Ingrese su nombre:</Text>
+      <TextInput
+        style={styles.input}
+        placeholder="Nombre"
+        value={nombre}
+        onChangeText={setNombre}
+      />
+      <Text style={styles.text}>Ingrese su teléfono:</Text>
+      <TextInput
+        style={styles.input}
+        placeholder="Teléfono"
+        value={telefono}
+        onChangeText={setTelefono}
+        keyboardType="phone-pad"
+      />
+      <Button
+        title="Enviar datos"
+        onPress={() =>
+          navigation.navigate('ScreenC2', { nombre, telefono })
+        }
+      />
     </View>
   );
 }
 
-function ScreenC2() {
+function ScreenC2({ route }) {
   const navigation = useNavigation();
+  const { nombre, telefono } = route.params || {};
+
   return (
     <View style={[styles.homeScreen, {backgroundColor: '#006600'}]}>
-      <Text style={styles.text}>PERFIL 2</Text>
-      <Button title="Volver a Perfil" onPress={() => navigation.goBack()} />
+      <Text style={styles.text}>Nombre: {nombre}</Text>
+      <Text style={styles.text}>Teléfono: {telefono}</Text>
+      <Button title="Volver" onPress={() => navigation.goBack()} />
     </View>
   );
 }
 
-//
-// Creación de los stacks
-//
 const StackA = createNativeStackNavigator();
 const StackB = createNativeStackNavigator();
 const StackC = createNativeStackNavigator();
@@ -105,13 +134,11 @@ function StackCNavigator() {
   );
 }
 
-//
-// Creación del BottomTabNavigator
-//
 const Tab = createBottomTabNavigator();
 
 function MyTabs() {
   return (
+    
     <Tab.Navigator
       screenOptions={({ route }) => ({
         tabBarIcon: ({ color, size }) => {
@@ -134,11 +161,11 @@ function MyTabs() {
       <Tab.Screen name="Home" component={StackANavigator} />
       <Tab.Screen name="Buscador" component={StackBNavigator} />
       <Tab.Screen name="Perfil" component={StackCNavigator} />
+      <Tab.Screen name="Noticias" component={StackDNavigator} options={{tabBarIcon: ({ color, size }) => (<Ionicons name="newspaper" size={size} color={color} />),}}/>
     </Tab.Navigator>
   );
 }
 
-// Envolviendo la aplicación en el NavigationContainer
 export default function App() {
   return (
     <NavigationContainer>
@@ -163,5 +190,14 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#ff0000',
+  },
+  input: {
+    borderWidth: 1,
+    borderColor: '#ccc',
+    padding: 10,
+    width: '80%',
+    marginBottom: 10,
+    borderRadius: 5,
+    backgroundColor: '#fff',
   },
 });

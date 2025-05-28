@@ -11,6 +11,16 @@ const Tab = createBottomTabNavigator();
 export default function BottomTabs() {
   return (
     <Tab.Navigator>
+     <Tab.Screen
+ name="Noticias"
+ component={StackDNavigator}
+  options={{
+    tabBarIcon: ({ color }) => (
+      <Ionicons name="newspaper" size={24} color={color} />
+    ),
+  }}
+/>
+
       <Tab.Screen
         name="Stack A"
         component={StackANavigator}
@@ -48,5 +58,6 @@ export default function BottomTabs() {
         }}
       />
     </Tab.Navigator>
+    
   );
 }

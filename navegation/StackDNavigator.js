@@ -1,15 +1,15 @@
-import React from 'react';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import ScreenD1 from '../src/screens/ScreenD1';
-import ScreenD2 from '../src/screens/ScreenD2';
+import Noticias1 from './screens/Noticias1';
+import Noticias2 from './screens/Noticias2';
 
-const Stack = createNativeStackNavigator();
+const StackD = createNativeStackNavigator();
 
-export default function StackDNavigator() {
+function StackDNavigator() {
   return (
-    <Stack.Navigator>
-      <Stack.Screen name="ScreenD1" component={ScreenD1} options={{ title: 'Formulario' }} />
-      <Stack.Screen name="ScreenD2" component={ScreenD2} options={{ title: 'Datos Ingresados' }} />
-    </Stack.Navigator>
+    <StackD.Navigator>
+      <StackD.Screen name="Noticias1" component={Noticias1} />
+      <StackD.Screen name="Noticias2" component={Noticias2} />
+    </StackD.Navigator>
   );
 }
+
+export default StackDNavigator;
